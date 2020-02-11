@@ -1,0 +1,70 @@
+Significance of _ in Swift:
+
+Use the underscore character when you need to use a value but for some reason don't want to:
+for x in 1 ... 5 {
+  print(x)
+}
+
+for _ in 1 ... 5 {
+ print(1)
+}
+
+The following function returns a tuple that contains the minimum and maximum values from the provided two arguments:
+
+func getMinMax(a: Int, b: Int) -> (Int, Int) {
+  if (a < b) {
+    return (min: a, max: b)
+  }
+  return (min: b, max: a)
+}
+let (min, max) = getMinMax(a: 15, b: 8)
+print(min) // => 8
+print(max) // => 15
+
+The invocation getMinMax(a: 15, b: 8) has a and b as argument labels. These indicate additional information about the arguments.
+It is possible that a and b argument labels do not provide useful information. 
+Suppose you want to access only the minimum from the returned tuple let (min, max) = getMinMax()
+
+For such cases Swift provides the wildcard pattern - a special underscore character _.
+
+Let’s use the underscore and transform the previous example:
+
+func getMinMax(_ a: Int, _ b: Int) -> (Int, Int) {
+  if (a < b) {
+    return (min: a, max: b)
+  }
+  return (min: b, max: a)
+}
+let (min, _) = getMinMax(15, 8)
+print(min) // => 8
+
+The function signature is changed to getMinMax(_ a: Int, _ b: Int), where _ is inserted before the parameter name. 
+This means that argument labels are not necessary on invocation: getMinMax(15, 8).
+Also the max component of the tuple can be skipped on extraction: let (min, _).
+
+Let’s study the situations where underscore _ helps avoiding redundant details.
+
+func sum(x: Int, y: Int) -> Int {
+  return x + y
+}
+print(sum(x: 10, y: 5)) // => 15
+
+func sum(_ x: Int, _ y: Int) -> Int {
+  return x + y
+}
+print(sum(10, 5)) // => 15
+
+Play with the code examples here: https://paiza.io/projects/sIivpC8pou44fibQNYEEFQ?language=swift
+Swift suggests developer to practice writing meaningful and detailed code. 
+While it works in most of the cases, sometimes providing additional details is redundant.
+
+The small underscore character _ can be used in such situations, to skip the unnecessary details.
+
+In the function signature func myFunc(_ paramName: Type) {...} use _ to skip providing the argument label 
+on invocation myFunc(valueOfType).
+
+You can omit unnecessary extractions from tuple components let (value, _) = ... or 
+enumeration associated values case .enumCase(value, _).
+
+On a function invocation _ = myFunc() you can also suppress the usage of the returned value. 
+However this workaround should be applied as an exception, since in most of the cases the result should be used.
